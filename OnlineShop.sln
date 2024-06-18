@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineShop.Infrastructure",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineShop.Application", "OnlineShop.Application\OnlineShop.Application.csproj", "{2A84CE01-8AC9-4ED9-BB48-4DC4FB133E45}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "WebApi\WebApi.csproj", "{2433FE37-3025-4EC6-8A4C-2E2DF608F25A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineShop.WebApi", "WebApi\OnlineShop.WebApi.csproj", "{2433FE37-3025-4EC6-8A4C-2E2DF608F25A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
