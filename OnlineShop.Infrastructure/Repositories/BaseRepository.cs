@@ -3,11 +3,11 @@ using OnlineShop.Domain.Interfaces;
 
 namespace OnlineShop.Infrastructure.Repositories;
 
-public class BaseRepository<TEntity, Tkey> : IBaseRepository<TEntity, Tkey> 
+public class BaseRepository<TEntity, Tkey> : IRepository<TEntity, Tkey> 
     where TEntity : class
 {
-    DbContext _context;
-    DbSet<TEntity> _dbSet;
+    protected DbContext _context;
+    protected DbSet<TEntity> _dbSet;
 
     public BaseRepository(DbContext context)
     {

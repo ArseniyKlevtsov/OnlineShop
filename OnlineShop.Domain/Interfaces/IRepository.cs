@@ -1,6 +1,6 @@
 ﻿namespace OnlineShop.Domain.Interfaces;
 
-public interface IBaseRepository<TEntity, TKey> 
+public interface IRepository<TEntity, TKey> 
     where TEntity : class
 {
     Task<TEntity?> Get(TKey key);
