@@ -1,16 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using OnlineShop.Domain;
 using OnlineShop.Domain.Interfaces;
+
 
 namespace OnlineShop.Infrastructure.Repositories;
 
 public class BaseRepository<TEntity> : IRepository<TEntity> 
     where TEntity : class
 {
-    protected DbContext _context;
+    protected ApplicationDbContext _context;
     protected DbSet<TEntity> _dbSet;
 
-    public BaseRepository(DbContext context)
+    public BaseRepository(ApplicationDbContext context)
     {
         _context = context;
         _dbSet = context.Set<TEntity>();
