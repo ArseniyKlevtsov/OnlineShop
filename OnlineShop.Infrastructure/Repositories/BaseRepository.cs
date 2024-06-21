@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using OnlineShop.Domain;
 using OnlineShop.Domain.Interfaces;
 
