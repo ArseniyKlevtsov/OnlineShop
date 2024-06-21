@@ -1,9 +1,11 @@
-﻿namespace OnlineShop.Domain.Interfaces;
+﻿using System.Linq.Expressions;
+
+namespace OnlineShop.Domain.Interfaces;
 
 public interface IRepository<TEntity> 
     where TEntity : class
 {
-    Task<TEntity?> GetByIdAsync(int id);
+    Task<TEntity?> GetByPerdicateAsync(Expression<Func<TEntity, bool>> predicate);
     Task<IEnumerable<TEntity>> GetAllAsync();
     Task AddAsync(TEntity entity);
     Task UpdateAsync(TEntity entity);
