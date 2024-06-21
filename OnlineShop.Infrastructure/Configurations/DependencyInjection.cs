@@ -15,6 +15,7 @@ namespace OnlineShop.Infrastructure.Configurations
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
 
             return services;
         }
