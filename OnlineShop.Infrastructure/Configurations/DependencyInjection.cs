@@ -14,8 +14,9 @@ namespace OnlineShop.Infrastructure.Configurations
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
-            
+
             return services;
         }
     }
