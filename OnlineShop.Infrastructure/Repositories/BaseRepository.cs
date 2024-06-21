@@ -1,13 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OnlineShop.Domain;
+using OnlineShop.Domain.Entities;
+using OnlineShop.Domain.IncludeStates.Extentions;
+using OnlineShop.Domain.IncludeStates.Interfaces;
+using OnlineShop.Domain.IncludeStates.States;
 using OnlineShop.Domain.Interfaces;
 using System.Linq.Expressions;
 
 
 namespace OnlineShop.Infrastructure.Repositories;
 
-public class BaseRepository<TEntity> : IRepository<TEntity> 
+public class BaseRepository<TEntity, TState> : IRepository<TEntity> 
     where TEntity : class
+    where TState : IIncludeState<TEntity>
 {
     protected ApplicationDbContext _context;
     protected DbSet<TEntity> _dbSet;
@@ -43,6 +48,14 @@ public class BaseRepository<TEntity> : IRepository<TEntity>
     {
         _dbSet.Remove(entity);
         await _context.SaveChangesAsync();
+    }
+
+    public virtual async Task<IEnumerable<TEntity>> GetWithIncludesAsync(TState includeState)
+    {
+        var query = _dbSet.AsNoTracking().AsQueryable();
+        query = query.IncludeWithState(includeState);
+
+        return await query.ToListAsync();
     }
 
 }
