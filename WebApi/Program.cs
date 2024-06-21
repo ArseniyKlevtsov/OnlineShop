@@ -1,7 +1,4 @@
-using Microsoft.EntityFrameworkCore;
-using OnlineShop.Domain.Interfaces;
-using OnlineShop.Domain;
-using OnlineShop.Infrastructure.Repositories;
+using OnlineShop.Infrastructure.Configurations;
 
 namespace WebApi
 {
@@ -18,11 +15,8 @@ namespace WebApi
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            // Register ApplicationDbContext and repositories
-            builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-            builder.Services.AddScoped<IUserRepository, UserRepository>();
+            // Add Infrastructure services
+            builder.Services.AddInfrastructure(builder.Configuration);
 
             var app = builder.Build();
 
