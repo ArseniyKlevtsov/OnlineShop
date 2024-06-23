@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using OnlineShop.Domain;
 using OnlineShop.Domain.Interfaces;
 using System.Linq.Expressions;
