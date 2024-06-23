@@ -1,4 +1,4 @@
-﻿namespace OnlineShop.Application.DTOs.Category.Responses;
+﻿namespace OnlineShop.Application.DTOs.CategoryDTOs.Responses;
 
 public class CategoryInfoResponseDto
 {

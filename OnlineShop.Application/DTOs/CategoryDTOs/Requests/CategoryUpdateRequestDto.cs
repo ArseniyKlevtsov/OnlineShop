@@ -1,4 +1,4 @@
-﻿namespace OnlineShop.Application.DTOs.Category.Requests;
+﻿namespace OnlineShop.Application.DTOs.CategoryDTOs.Requests;
 
 public class CategoryUpdateRequestDto
 {
