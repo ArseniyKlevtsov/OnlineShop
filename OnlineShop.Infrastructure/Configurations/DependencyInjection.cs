@@ -16,6 +16,7 @@ namespace OnlineShop.Infrastructure.Configurations
 
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IOrderItemRepository, OrderItemRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
 
             return services;
