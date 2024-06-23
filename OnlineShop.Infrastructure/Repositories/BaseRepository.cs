@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OnlineShop.Domain;
 using OnlineShop.Domain.Interfaces;
+using System.Linq.Expressions;
 
 
 namespace OnlineShop.Infrastructure.Repositories;
@@ -16,17 +17,12 @@ public class BaseRepository<TEntity> : IRepository<TEntity>
         _context = context;
         _dbSet = context.Set<TEntity>();
     }
-    public virtual async Task<TEntity?> GetByIdAsync(int id)
+
+    public virtual async Task<TEntity?> GetByPerdicateAsync(Expression<Func<TEntity, bool>> predicate)
     {
-        var entity = await _dbSet.FindAsync(id);
-
-        if (entity != null)
-        {
-            _context.Entry(entity).State = EntityState.Detached;
-        }
-        return entity;
+        return await _dbSet.AsNoTracking()
+            .FirstOrDefaultAsync(predicate);
     }
-
     public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
     {
         return await _dbSet.AsNoTracking().ToListAsync();
