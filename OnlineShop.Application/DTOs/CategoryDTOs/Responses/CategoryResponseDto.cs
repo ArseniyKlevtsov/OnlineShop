@@ -1,6 +1,6 @@
 ﻿using OnlineShop.Domain.Entities;
 
-namespace OnlineShop.Application.DTOs.Category.Responses;
+namespace OnlineShop.Application.DTOs.CategoryDTOs.Responses;
 
 public class CategoryResponseDto
 {

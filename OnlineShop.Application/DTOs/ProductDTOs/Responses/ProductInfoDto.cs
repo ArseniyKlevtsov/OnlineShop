@@ -1,4 +1,4 @@
-﻿namespace OnlineShop.Application.DTOs.Product.Responses;
+﻿namespace OnlineShop.Application.DTOs.ProductDTOs.Responses;
 
 public class ProductInfoDto
 {

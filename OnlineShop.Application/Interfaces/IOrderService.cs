@@ -1,5 +1,5 @@
-﻿using OnlineShop.Application.DTOs.Order.Requests;
-using OnlineShop.Application.DTOs.Order.Responses;
+﻿using OnlineShop.Application.DTOs.OrderDTOs.Requests;
+using OnlineShop.Application.DTOs.OrderDTOs.Responses;
 
 namespace OnlineShop.Application.Interfaces;
 
