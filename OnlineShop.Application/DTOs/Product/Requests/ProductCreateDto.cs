@@ -1,4 +1,4 @@
-﻿namespace OnlineShop.Application.DTOs.Product;
+﻿namespace OnlineShop.Application.DTOs.Product.Requests;
 
 public class ProductCreateDto
 {

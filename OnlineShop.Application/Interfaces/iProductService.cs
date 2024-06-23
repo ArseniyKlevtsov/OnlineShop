@@ -1,8 +1,9 @@
-﻿using OnlineShop.Application.DTOs.Product;
+﻿using OnlineShop.Application.DTOs.Product.Requests;
+using OnlineShop.Application.DTOs.Product.Responses;
 
 namespace OnlineShop.Application.Interfaces;
 
-public interface iProductService
+public interface IProductService
 {
     Task<ProductDto> GetProductByIdAsync(int productId);
     Task<ProductPreViewDto> GetProductPreViewAsync(int productId);

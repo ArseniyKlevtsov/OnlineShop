@@ -1,6 +1,6 @@
 ﻿using OnlineShop.Domain.Entities;
 
-namespace OnlineShop.Application.DTOs.Product;
+namespace OnlineShop.Application.DTOs.Product.Responses;
 
 public class ProductPreViewDto
 {
