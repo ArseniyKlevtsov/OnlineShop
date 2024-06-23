@@ -1,20 +1,13 @@
 ﻿using OnlineShop.Domain.Entities;
+using OnlineShop.Domain.IncludeStates;
 
 namespace OnlineShop.Domain.Interfaces;
 
 public interface IProductRepository: IRepository<Product>
 {
-    // filters
-    Task<IEnumerable<Product>> GetByCategoryAsync(Category category);
-    Task<IEnumerable<Product>> GetByCategoryIdAsync(int categoryId);
+    Task<IEnumerable<Product>> GetWithIncludeAsync(ProductIncludeState includeState);
 
-    // includes tables
-    Task<IEnumerable<Product>> GetIncludeAllAsync();
-    Task<IEnumerable<Product>> GetIncludeCategoryAsync();
-    Task<IEnumerable<Product>> GetIncludeOrderItemsAsync();
-
-    // filters + includes
-    Task<IEnumerable<Product>> GetByCategoryIncludeAllAsync(Category category);
-    Task<IEnumerable<Product>> GetByCategoryIdIncludeAllAsync(int categoryId);
+    Task<IEnumerable<Product>> GetByCategoryAsync(Category category, ProductIncludeState includeState);
+    Task<IEnumerable<Product>> GetByCategoryIdAsync(int categoryId, ProductIncludeState includeState);
 
 }
