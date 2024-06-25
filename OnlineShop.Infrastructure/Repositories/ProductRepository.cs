@@ -4,6 +4,7 @@ using OnlineShop.Domain;
 using Microsoft.EntityFrameworkCore;
 using OnlineShop.Domain.IncludeStates;
 using OnlineShop.Domain.Extensions;
+using System.Linq.Expressions;
 
 namespace OnlineShop.Infrastructure.Repositories;
 
@@ -19,20 +20,11 @@ public class ProductRepository : BaseRepository<Product>, IProductRepository
             .ToListAsync();
     }
 
-    public async Task<IEnumerable<Product>> GetByCategoryAsync(Category category, ProductIncludeState includeState)
+    public async Task<IEnumerable<Product>> GetWithIncludeByPredicateAsync(Expression<Func<Product, bool>> predicate, ProductIncludeState includeState)
     {
         return await _dbSet
             .AsNoTracking()
-            .Where(p => p.CategoryId == category.CategoryId)
-            .IncludeWithState(includeState)
-            .ToListAsync();
-    }
-
-    public async Task<IEnumerable<Product>> GetByCategoryIdAsync(int categoryId, ProductIncludeState includeState)
-    {
-        return await _dbSet
-            .AsNoTracking()
-            .Where(p => p.CategoryId == categoryId)
+            .Where(predicate)
             .IncludeWithState(includeState)
             .ToListAsync();
     }

@@ -1,16 +1,14 @@
-﻿using System.Collections.Generic;
-
-namespace OnlineShop.Domain.Entities;
+﻿namespace OnlineShop.Domain.Entities;
 
 public class Product
 {
     public int ProductId { get; set; }
-    public string ProductName { get; set; }
-    public string ProductDescription { get; set; }
+    public string? ProductName { get; set; }
+    public string? ProductDescription { get; set; }
     public decimal ProductPrice { get; set; }
     public int CategoryId { get; set; }
 
-    public Category Category { get; set; }
-    public ICollection<OrderItem> OrderItems { get; set; }
+    public Category? Category { get; set; }
+    public ICollection<OrderItem>? OrderItems { get; set; }
 }
 
