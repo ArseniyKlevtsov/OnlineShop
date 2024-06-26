@@ -11,25 +11,27 @@ public class OrderItemRepository : BaseRepository<OrderItem>, IOrderItemReposito
 
     public async Task<IEnumerable<OrderItem>> GetByOrderIdAsync(int orderId)
     {
-        return await _context.OrderItems.Where(oi => oi.OrderId == orderId)
-                          .Include(oi => oi.Order)
-                          .Include(oi => oi.Product)
-                          .ToListAsync();
+        return await _dbSet
+            .AsNoTracking()
+            .Where(orderItem => orderItem.OrderId == orderId)
+            .Include(orderItem => orderItem.Order)
+            .Include(orderItem => orderItem.Product)
+            .ToListAsync();
     }
+
     public async Task<IEnumerable<OrderItem>> GetByProductIdAsync(int productId)
     {
-        return await _context.OrderItems.Where(oi => oi.ProductId == productId)
-                           .Include(oi => oi.Order)
-                           .Include(oi => oi.Product)
-                           .ToListAsync();
+        return await _dbSet
+            .AsNoTracking()
+            .Where(orderItem => orderItem.ProductId == productId)
+            .Include(orderItem => orderItem.Order)
+            .Include(orderItem => orderItem.Product)
+            .ToListAsync();
     }
     public async Task DeleteByIdAsync(int orderItemId)
     {
         var entity = await _context.OrderItems.FirstOrDefaultAsync(c => c.OrderItemId == orderItemId);
-        if (entity != null)
-        {
-            _context.OrderItems.Remove(entity);
-            await _context.SaveChangesAsync();
-        }
+        _context.OrderItems.Remove(entity);
+        await _context.SaveChangesAsync();
     }
 }

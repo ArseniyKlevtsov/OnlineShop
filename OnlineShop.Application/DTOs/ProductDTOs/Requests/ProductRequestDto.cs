@@ -1,6 +1,6 @@
 ﻿namespace OnlineShop.Application.DTOs.ProductDTOs.Requests;
 
-public class ProductCreateDto
+public class ProductRequestDto
 {
     public string? ProductName { get; set; }
     public string? ProductDescription { get; set; }

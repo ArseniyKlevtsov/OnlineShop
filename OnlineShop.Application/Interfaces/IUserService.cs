@@ -5,10 +5,11 @@ namespace OnlineShop.Application.Interfaces;
 
 public interface IUserService
 {
-    Task<UserWithRolesResponse> GetUserWithRolesAsync(Guid userId);
+    Task<UserWithRolesResponse> GetUserWithRolesAsync(string userId);
     Task<IEnumerable<UserWithRolesResponse>> GetAllUsersWithRolesAsync();
+
     Task<UserWithRolesResponse> CreateUserAsync(CreateUserRequestDto userDto);
-    Task UpdateUserAsync(UpdateUserRequestDto userDto);
-    Task DeleteUserAsync(Guid userId);
-    Task<bool> AuthenticateUserAsync(UserLoginInfoResponse loginInfo);
+    Task UpdateUserAsync(UpdateUserInfoRequestDto userDto);
+    Task DeleteUserAsync(string userId);
+    Task<bool> AuthenticateUserAsync(UserLoginRequestDro userLoginRequestDro);
 }

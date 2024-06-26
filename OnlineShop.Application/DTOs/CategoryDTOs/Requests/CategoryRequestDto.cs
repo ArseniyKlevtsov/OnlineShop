@@ -1,6 +1,6 @@
 ﻿namespace OnlineShop.Application.DTOs.CategoryDTOs.Requests;
 
-public class CategoryCreateRequestDto
+public class CategoryRequestDto
 {
     public string? CategoryName { get; set; }
 }
