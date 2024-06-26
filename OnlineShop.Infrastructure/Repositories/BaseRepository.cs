@@ -1,8 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using OnlineShop.Domain;
 using OnlineShop.Domain.Interfaces;
 using System.Linq.Expressions;
-
 
 namespace OnlineShop.Infrastructure.Repositories;
 
@@ -18,7 +17,7 @@ public class BaseRepository<TEntity> : IRepository<TEntity>
         _dbSet = context.Set<TEntity>();
     }
 
-    public virtual async Task<TEntity?> GetByPerdicateAsync(Expression<Func<TEntity, bool>> predicate)
+    public virtual async Task<TEntity?> GetByPredicateAsync(Expression<Func<TEntity, bool>> predicate)
     {
         return await _dbSet.AsNoTracking()
             .FirstOrDefaultAsync(predicate);
