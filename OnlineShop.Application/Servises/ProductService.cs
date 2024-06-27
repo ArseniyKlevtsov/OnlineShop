@@ -108,10 +108,6 @@ public class ProductService : IProductService
     private async Task<Product> GetProductByIdWithCheckAsync(int productId)
     {
         var product = await _productRepository.GetByPredicateAsync(p => p.ProductId == productId);
-        if (product == null)
-        {
-            throw new ProductNotFoundException(productId);
-        }
-        return product;
+        return product ?? throw new ProductNotFoundException($"Product not found.", productId);
     }
 }
