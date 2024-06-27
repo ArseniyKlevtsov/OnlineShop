@@ -1,4 +1,4 @@
-﻿using OnlineShop.Application.Exceptions;
+using OnlineShop.Application.Exceptions;
 using OnlineShop.Application.Exceptions.ProductExceptions;
 using System.Net;
 
