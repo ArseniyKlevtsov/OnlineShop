@@ -25,6 +25,7 @@ namespace OnlineShop.Infrastructure.Configurations
 
             // Register Services
             services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IOrderItemService, OrderItemService>();
 
             // Register AutoMapper
             services.AddAutoMapper(typeof(MappingProfile));

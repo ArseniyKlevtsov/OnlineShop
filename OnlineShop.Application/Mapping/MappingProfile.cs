@@ -1,16 +1,17 @@
 ﻿using AutoMapper;
+using OnlineShop.Application.DTOs.OrderItemsDTOs.Requests;
+using OnlineShop.Application.DTOs.OrderItemsDTOs.Responses;
 using OnlineShop.Domain.Entities;
-using OnlineShop.Application.DTOs.OrderDTOs.Requests;
-using OnlineShop.Application.DTOs.OrderDTOs.Responses;
 
-namespace OnlineShop.Application.Mapping
+namespace OnlineShop.Application.MappingProfiles
 {
     public class MappingProfile : Profile
     {
         public MappingProfile()
         {
-            CreateMap<Order, OrderResponseDto>();
-            CreateMap<OrderRequestDto, Order>();
+            CreateMap<CreateOrderItemRequestDto, OrderItem>();
+            CreateMap<UpdateOrderItemRequestDto, OrderItem>();
+            CreateMap<OrderItem, OrderItemDtoResponse>();
         }
     }
 }
