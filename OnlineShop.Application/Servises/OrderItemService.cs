@@ -20,8 +20,7 @@ namespace OnlineShop.Application.Services
 
         public async Task<OrderItemDtoResponse> GetOrderItemAsync(int orderItemId)
         {
-            var orderItems = await _orderItemRepository.GetByOrderIdAsync(orderItemId);
-            var orderItem = orderItems.FirstOrDefault(); // Получаем первый элемент или null
+            var orderItem = await _orderItemRepository.GetByPredicateAsync(oi => oi.OrderItemId == orderItemId);
             if (orderItem == null)
             {
                 throw new KeyNotFoundException($"Order item with ID {orderItemId} not found.");
@@ -44,8 +43,7 @@ namespace OnlineShop.Application.Services
 
         public async Task<OrderItemDtoResponse> UpdateOrderItemAsync(int id, UpdateOrderItemRequestDto updateOrderItemRequestDto)
         {
-            var orderItems = await _orderItemRepository.GetByOrderIdAsync(id);
-            var orderItem = orderItems.FirstOrDefault(); // Получаем первый элемент или null
+            var orderItem = await _orderItemRepository.GetByPredicateAsync(oi => oi.OrderItemId == id);
             if (orderItem == null)
             {
                 throw new KeyNotFoundException($"Order item with ID {id} not found.");
@@ -58,8 +56,7 @@ namespace OnlineShop.Application.Services
 
         public async Task DeleteOrderItemAsync(int orderItemId)
         {
-            var orderItems = await _orderItemRepository.GetByOrderIdAsync(orderItemId);
-            var orderItem = orderItems.FirstOrDefault(); // Получаем первый элемент или null
+            var orderItem = await _orderItemRepository.GetByPredicateAsync(oi => oi.OrderItemId == orderItemId);
             if (orderItem == null)
             {
                 throw new KeyNotFoundException($"Order item with ID {orderItemId} not found.");
