@@ -10,8 +10,8 @@ public interface IProductService
     Task<IEnumerable<ProductDto>> GetAllProductsAsync();
     Task<IEnumerable<ProductPreViewDto>> GetProductPreViewsAsync();
 
-    Task<ProductDto> CreateProductAsync(ProductRequestDto productRequestDto);
-    Task<ProductDto> UpdateProductAsync(int productId, ProductRequestDto productRequestDto);
-    Task<ProductDto> UpdateProductInfolyAsync(int productId, ProductInfoDto newProductInfoDto);
+    Task CreateProductAsync(ProductRequestDto productRequestDto);
+    Task UpdateProductAsync(int productId, ProductRequestDto productRequestDto);
+    Task UpdateProductInfolyAsync(int productId, ProductInfoDto newProductInfoDto);
     Task DeleteProductAsync(int productId);
 }
