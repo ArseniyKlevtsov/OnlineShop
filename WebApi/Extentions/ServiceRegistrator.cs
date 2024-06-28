@@ -36,6 +36,8 @@ public static class ServiceRegistrator
         services.AddAuthorization(options =>
         {
             options.AddPolicy("RequireAdministratorRole", policy => policy.RequireRole("Admin"));
+            options.AddPolicy("RequireUserRole", policy => policy.RequireRole("User"));
+            options.AddPolicy("RequireAdminOrUser", policy => policy.RequireRole("Admin", "User"));
         });
 
         return services;

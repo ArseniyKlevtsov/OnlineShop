@@ -11,5 +11,4 @@ public interface IUserService
     Task<UserWithRolesResponse> CreateUserAsync(CreateUserRequestDto userDto);
     Task UpdateUserAsync(UpdateUserInfoRequestDto userDto);
     Task DeleteUserAsync(string userId);
-    Task<bool> AuthenticateUserAsync(UserLoginRequestDro userLoginRequestDro);
 }
