@@ -18,7 +18,7 @@ public class AuthController : Controller
 
     [AllowAnonymous]
     [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] CreateUserRequestDto createUserRequestDto)
+    public async Task<IActionResult> Register(CreateUserRequestDto createUserRequestDto)
     {
         var result = await _authService.Register(createUserRequestDto);
 
@@ -32,7 +32,7 @@ public class AuthController : Controller
 
     [AllowAnonymous]
     [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] UserLoginRequestDto userLoginRequestDto)
+    public async Task<IActionResult> Login(UserLoginRequestDto userLoginRequestDto)
     {
         var token = await _authService.Login(userLoginRequestDto);
 

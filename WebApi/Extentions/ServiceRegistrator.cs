@@ -1,5 +1,10 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using FluentValidation;
+using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using OnlineShop.Application.FluentValidation.UserValidators;
+using OnlineShop.Application.Interfaces;
+using OnlineShop.Application.Servises;
 using OnlineShop.Infrastructure.Configurations;
 using System.Text;
 
@@ -14,7 +19,18 @@ public static class ServiceRegistrator
         services.AddSwaggerGen();
 
         services.AddInfrastructure(configuration);
+        services.AddJWTAuth(configuration);
 
+        services.AddFluentValidationAutoValidation();
+        services.AddValidatorsFromAssembly(typeof(CreateUserRequestDtoValidator).Assembly);
+
+        services.AddScoped<IAuthService, AuthService>();
+
+        return services;
+    }
+
+    private static IServiceCollection AddJWTAuth(this IServiceCollection services, IConfiguration configuration)
+    {
         services.AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -39,7 +55,6 @@ public static class ServiceRegistrator
             options.AddPolicy("RequireUserRole", policy => policy.RequireRole("User"));
             options.AddPolicy("RequireAdminOrUser", policy => policy.RequireRole("Admin", "User"));
         });
-
         return services;
     }
 }

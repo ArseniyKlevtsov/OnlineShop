@@ -24,7 +24,7 @@ public class ExceptionHandlingMiddleware(RequestDelegate next)
         ExceptionResponse response = exception switch
         {
 
-            _ => new ExceptionResponse(HttpStatusCode.InternalServerError, "Internal server error. Please retry later.")
+            _ => new ExceptionResponse(HttpStatusCode.InternalServerError, "Internal server error. Please retry later." + exception.Message)
         };
 
         context.Response.ContentType = "application/json";
