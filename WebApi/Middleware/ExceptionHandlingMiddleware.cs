@@ -1,4 +1,5 @@
 ﻿using OnlineShop.Application.Exceptions;
+using OnlineShop.Application.Exceptions.AuthExceptions;
 using System.Net;
 
 namespace OnlineShop.WebApi.Middleware;
@@ -23,8 +24,8 @@ public class ExceptionHandlingMiddleware(RequestDelegate next)
     {
         ExceptionResponse response = exception switch
         {
-
-            _ => new ExceptionResponse(HttpStatusCode.InternalServerError, "Internal server error. Please retry later." + exception.Message)
+            UserNotFoundException ex => new ExceptionResponse(HttpStatusCode.NotFound, exception.Message),
+            _ => new ExceptionResponse(HttpStatusCode.InternalServerError, "Internal server error. Please retry later.")
         };
 
         context.Response.ContentType = "application/json";
