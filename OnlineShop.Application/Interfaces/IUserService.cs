@@ -1,4 +1,4 @@
-﻿using OnlineShop.Application.DTOs.UserDTOs.Requests;
+using OnlineShop.Application.DTOs.UserDTOs.Requests;
 using OnlineShop.Application.DTOs.UserDTOs.Responses;
 
 namespace OnlineShop.Application.Interfaces;
