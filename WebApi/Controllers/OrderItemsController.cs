@@ -2,6 +2,9 @@
 using OnlineShop.Application.DTOs.OrderItemsDTOs.Requests;
 using OnlineShop.Application.DTOs.OrderItemsDTOs.Responses;
 using OnlineShop.Application.Interfaces;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace OnlineShop.WebApi.Controllers
 {
@@ -17,59 +20,38 @@ namespace OnlineShop.WebApi.Controllers
         }
 
         [HttpGet("{orderItemId}")]
-        public async Task<ActionResult<OrderItemDtoResponse>> GetOrderItem(int orderItemId)
+        public async Task<ActionResult<OrderItemDtoResponse>> GetOrderItem([FromRoute] int orderItemId, CancellationToken cancellationToken)
         {
-            try
-            {
-                var orderItem = await _orderItemService.GetOrderItemAsync(orderItemId);
-                return Ok(orderItem);
-            }
-            catch (KeyNotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
+            var orderItem = await _orderItemService.GetOrderItemAsync(orderItemId, cancellationToken);
+            return Ok(orderItem);
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<OrderItemDtoResponse>>> GetAllOrderItems()
+        public async Task<ActionResult<IEnumerable<OrderItemDtoResponse>>> GetAllOrderItems(CancellationToken cancellationToken)
         {
-            var orderItems = await _orderItemService.GetAllOrderItemsAsync();
+            var orderItems = await _orderItemService.GetAllOrderItemsAsync(cancellationToken);
             return Ok(orderItems);
         }
 
         [HttpPost]
-        public async Task<ActionResult<OrderItemDtoResponse>> CreateOrderItem(CreateOrderItemRequestDto createOrderItemRequestDto)
+        public async Task<ActionResult<OrderItemDtoResponse>> CreateOrderItem([FromBody] CreateOrderItemRequestDto createOrderItemRequestDto, CancellationToken cancellationToken)
         {
-            var createdOrderItem = await _orderItemService.CreateOrderItemAsync(createOrderItemRequestDto);
+            var createdOrderItem = await _orderItemService.CreateOrderItemAsync(createOrderItemRequestDto, cancellationToken);
             return CreatedAtAction(nameof(GetOrderItem), new { orderItemId = createdOrderItem.OrderItemId }, createdOrderItem);
         }
 
         [HttpPut("{orderItemId}")]
-        public async Task<ActionResult<OrderItemDtoResponse>> UpdateOrderItem(int orderItemId, UpdateOrderItemRequestDto updateOrderItemRequestDto)
+        public async Task<ActionResult<OrderItemDtoResponse>> UpdateOrderItem([FromRoute] int orderItemId, [FromBody] UpdateOrderItemRequestDto updateOrderItemRequestDto, CancellationToken cancellationToken)
         {
-            try
-            {
-                var updatedOrderItem = await _orderItemService.UpdateOrderItemAsync(orderItemId, updateOrderItemRequestDto);
-                return Ok(updatedOrderItem);
-            }
-            catch (KeyNotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
+            var updatedOrderItem = await _orderItemService.UpdateOrderItemAsync(orderItemId, updateOrderItemRequestDto, cancellationToken);
+            return Ok(updatedOrderItem);
         }
 
         [HttpDelete("{orderItemId}")]
-        public async Task<IActionResult> DeleteOrderItem(int orderItemId)
+        public async Task<IActionResult> DeleteOrderItem([FromRoute] int orderItemId, CancellationToken cancellationToken)
         {
-            try
-            {
-                await _orderItemService.DeleteOrderItemAsync(orderItemId);
-                return NoContent();
-            }
-            catch (KeyNotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
+            await _orderItemService.DeleteOrderItemAsync(orderItemId, cancellationToken);
+            return NoContent();
         }
     }
 }
