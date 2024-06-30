@@ -56,7 +56,7 @@ public class UserService : IUserService
     public async Task<UserWithRolesResponse> CreateUserAsync(CreateUserRequestDto userDto)
     {
         var user = _mapper.Map<User>(userDto);
-        var result = await _userManager.CreateAsync(user, userDto.Password);
+        var result = await _userManager.CreateAsync(user, userDto.Password!);
 
         if (!result.Succeeded)
         {
@@ -70,7 +70,7 @@ public class UserService : IUserService
 
     public async Task UpdateUserAsync(UpdateUserInfoRequestDto userDto)
     {
-        var user = await _userManager.FindByEmailAsync(userDto.Email);
+        var user = await _userManager.FindByEmailAsync(userDto.Email!);
         if (user == null)
         {
             throw new NotFoundException($"User with email {userDto.Email} not found.");

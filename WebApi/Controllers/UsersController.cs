@@ -20,7 +20,7 @@ public class UsersController : ControllerBase
 
     [HttpGet("{userId}")]
     [Authorize(Policy = "RequireAdminOrUser")]
-    public async Task<ActionResult<UserWithRolesResponse>> GetUser(string userId)
+    public async Task<ActionResult<UserWithRolesResponse>> GetUser([FromRoute] string userId)
     {
         var user = await _userService.GetUserWithRolesAsync(userId);
         return Ok(user);
@@ -39,7 +39,7 @@ public class UsersController : ControllerBase
     public async Task<ActionResult<UserWithRolesResponse>> CreateUser([FromBody] CreateUserRequestDto createUserDto)
     {
         var createdUser = await _userService.CreateUserAsync(createUserDto);
-        return CreatedAtAction(nameof(GetUser), new { userId = createdUser.UserName }, createdUser);
+        return CreatedAtAction(nameof(GetUser), new { userId = createdUser.Id }, createdUser);
     }
 
     [HttpPut]
