@@ -1,4 +1,4 @@
-﻿namespace OnlineShop.Application.Exception
+﻿namespace OnlineShop.Application.Exceptions
 {
     public class UnauthorizedAccessException : ApplicationException
     {
