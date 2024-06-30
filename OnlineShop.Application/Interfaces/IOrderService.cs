@@ -1,5 +1,8 @@
 ﻿using OnlineShop.Application.DTOs.OrderDTOs.Requests;
 using OnlineShop.Application.DTOs.OrderDTOs.Responses;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace OnlineShop.Application.Interfaces
 {

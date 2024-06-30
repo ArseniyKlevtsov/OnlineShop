@@ -1,4 +1,7 @@
 ﻿using OnlineShop.Domain.Entities;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace OnlineShop.Domain.Interfaces
 {
