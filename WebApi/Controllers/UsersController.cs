@@ -20,41 +20,41 @@ public class UsersController : ControllerBase
 
     [HttpGet("{userId}")]
     [Authorize(Policy = "RequireAdminOrUser")]
-    public async Task<ActionResult<UserWithRolesResponse>> GetUser([FromRoute] string userId)
+    public async Task<ActionResult<UserWithRolesResponse>> GetUser([FromRoute] string userId, CancellationToken cancellationToken)
     {
-        var user = await _userService.GetUserWithRolesAsync(userId);
+        var user = await _userService.GetUserWithRolesAsync(userId, cancellationToken);
         return Ok(user);
     }
 
     [HttpGet]
     [Authorize(Policy = "RequireAdministratorRole")]
-    public async Task<ActionResult<IEnumerable<UserWithRolesResponse>>> GetAllUsers()
+    public async Task<ActionResult<IEnumerable<UserWithRolesResponse>>> GetAllUsers(CancellationToken cancellationToken)
     {
-        var users = await _userService.GetAllUsersWithRolesAsync();
+        var users = await _userService.GetAllUsersWithRolesAsync(cancellationToken);
         return Ok(users);
     }
 
     [HttpPost]
     [Authorize(Policy = "RequireAdministratorRole")]
-    public async Task<ActionResult<UserWithRolesResponse>> CreateUser([FromBody] CreateUserRequestDto createUserDto)
+    public async Task<ActionResult<UserWithRolesResponse>> CreateUser([FromBody] CreateUserRequestDto createUserDto, CancellationToken cancellationToken)
     {
-        var createdUser = await _userService.CreateUserAsync(createUserDto);
+        var createdUser = await _userService.CreateUserAsync(createUserDto, cancellationToken);
         return CreatedAtAction(nameof(GetUser), new { userId = createdUser.Id }, createdUser);
     }
 
     [HttpPut]
     [Authorize(Policy = "RequireAdminOrUser")]
-    public async Task<IActionResult> UpdateUser([FromBody] UpdateUserInfoRequestDto updateUserDto)
+    public async Task<IActionResult> UpdateUser([FromBody] UpdateUserInfoRequestDto updateUserDto, CancellationToken cancellationToken)
     {
-        await _userService.UpdateUserAsync(updateUserDto);
+        await _userService.UpdateUserAsync(updateUserDto, cancellationToken);
         return NoContent();
     }
 
     [HttpDelete("{userId}")]
     [Authorize(Policy = "RequireAdministratorRole")]
-    public async Task<IActionResult> DeleteUser(string userId)
+    public async Task<IActionResult> DeleteUser(string userId, CancellationToken cancellationToken)
     {
-        await _userService.DeleteUserAsync(userId);
+        await _userService.DeleteUserAsync(userId, cancellationToken);
         return NoContent();
     }
 }

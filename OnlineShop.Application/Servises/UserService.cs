@@ -6,6 +6,7 @@ using OnlineShop.Application.Exceptions;
 using OnlineShop.Application.Interfaces;
 using OnlineShop.Domain.Entities;
 using OnlineShop.Domain.Interfaces;
+using System.Threading;
 
 namespace OnlineShop.Application.Services;
 
@@ -22,7 +23,7 @@ public class UserService : IUserService
         _userManager = userManager;
     }
 
-    public async Task<UserWithRolesResponse> GetUserWithRolesAsync(string userId)
+    public async Task<UserWithRolesResponse> GetUserWithRolesAsync(string userId, CancellationToken cancellationToken)
     {
         var user = await _userManager.FindByIdAsync(userId);
         if (user == null)
@@ -37,9 +38,9 @@ public class UserService : IUserService
         return userDto;
     }
 
-    public async Task<IEnumerable<UserWithRolesResponse>> GetAllUsersWithRolesAsync()
+    public async Task<IEnumerable<UserWithRolesResponse>> GetAllUsersWithRolesAsync(CancellationToken cancellationToken)
     {
-        var users = await _userRepository.GetAllAsync();
+        var users = await _userRepository.GetAllAsync(cancellationToken);
         var userDtos = new List<UserWithRolesResponse>();
 
         foreach (var user in users)
@@ -53,7 +54,7 @@ public class UserService : IUserService
         return userDtos;
     }
 
-    public async Task<UserWithRolesResponse> CreateUserAsync(CreateUserRequestDto userDto)
+    public async Task<UserWithRolesResponse> CreateUserAsync(CreateUserRequestDto userDto, CancellationToken cancellationToken)
     {
         var user = _mapper.Map<User>(userDto);
         var result = await _userManager.CreateAsync(user, userDto.Password!);
@@ -65,10 +66,10 @@ public class UserService : IUserService
 
         await _userManager.AddToRoleAsync(user, "User");
 
-        return await GetUserWithRolesAsync(user.Id);
+        return await GetUserWithRolesAsync(user.Id, cancellationToken);
     }
 
-    public async Task UpdateUserAsync(UpdateUserInfoRequestDto userDto)
+    public async Task UpdateUserAsync(UpdateUserInfoRequestDto userDto, CancellationToken cancellationToken)
     {
         var user = await _userManager.FindByEmailAsync(userDto.Email!);
         if (user == null)
@@ -85,7 +86,7 @@ public class UserService : IUserService
         }
     }
 
-    public async Task DeleteUserAsync(string userId)
+    public async Task DeleteUserAsync(string userId, CancellationToken cancellationToken)
     {
         var user = await _userManager.FindByIdAsync(userId);
         if (user == null)

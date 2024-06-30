@@ -5,10 +5,10 @@ namespace OnlineShop.Application.Interfaces;
 
 public interface IUserService
 {
-    Task<UserWithRolesResponse> GetUserWithRolesAsync(string userId);
-    Task<IEnumerable<UserWithRolesResponse>> GetAllUsersWithRolesAsync();
+    Task<UserWithRolesResponse> GetUserWithRolesAsync(string userId, CancellationToken cancellationToken);
+    Task<IEnumerable<UserWithRolesResponse>> GetAllUsersWithRolesAsync(CancellationToken cancellationToken);
 
-    Task<UserWithRolesResponse> CreateUserAsync(CreateUserRequestDto userDto);
-    Task UpdateUserAsync(UpdateUserInfoRequestDto userDto);
-    Task DeleteUserAsync(string userId);
+    Task<UserWithRolesResponse> CreateUserAsync(CreateUserRequestDto userDto, CancellationToken cancellationToken);
+    Task UpdateUserAsync(UpdateUserInfoRequestDto userDto, CancellationToken cancellationToken);
+    Task DeleteUserAsync(string userId, CancellationToken cancellationToken);
 }
