@@ -2,9 +2,6 @@
 using OnlineShop.Application.DTOs.OrderDTOs.Requests;
 using OnlineShop.Application.DTOs.OrderDTOs.Responses;
 using OnlineShop.Application.Interfaces;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 using AutoMapper;
 
 namespace OnlineShop.WebApi.Controllers
