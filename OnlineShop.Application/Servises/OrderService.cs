@@ -20,7 +20,42 @@ namespace OnlineShop.Application.Services
 
         public async Task<OrderResponseDto> GetOrderByIdAsync(int orderId)
         {
-            var order = await _orderRepository.GetOrderWithDetailsAsync(orderId);
+            return await GetOrderByIdAsync(orderId, CancellationToken.None);
+        }
+
+        public async Task<IEnumerable<OrderResponseDto>> GetAllOrdersAsync()
+        {
+            return await GetAllOrdersAsync(CancellationToken.None);
+        }
+
+        public async Task<IEnumerable<OrderResponseDto>> GetOrdersByUserIdAsync(string userId)
+        {
+            return await GetOrdersByUserIdAsync(userId, CancellationToken.None);
+        }
+
+        public async Task<GetOrderWithDetailsResponseDto> GetOrderWithDetailsAsync(int orderId)
+        {
+            return await GetOrderWithDetailsAsync(orderId, CancellationToken.None);
+        }
+
+        public async Task CreateOrderAsync(OrderRequestDto order)
+        {
+            await CreateOrderAsync(order, CancellationToken.None);
+        }
+
+        public async Task UpdateOrderAsync(int orderId, OrderRequestDto order)
+        {
+            await UpdateOrderAsync(orderId, order, CancellationToken.None);
+        }
+
+        public async Task DeleteOrderAsync(int orderId)
+        {
+            await DeleteOrderAsync(orderId, CancellationToken.None);
+        }
+
+        public async Task<OrderResponseDto> GetOrderByIdAsync(int orderId, CancellationToken cancellationToken)
+        {
+            var order = await _orderRepository.GetOrderWithDetailsAsync(orderId, cancellationToken);
             if (order == null)
             {
                 throw new KeyNotFoundException($"Order with ID {orderId} not found.");
@@ -28,21 +63,21 @@ namespace OnlineShop.Application.Services
             return _mapper.Map<OrderResponseDto>(order);
         }
 
-        public async Task<IEnumerable<OrderResponseDto>> GetAllOrdersAsync()
+        public async Task<IEnumerable<OrderResponseDto>> GetAllOrdersAsync(CancellationToken cancellationToken)
         {
-            var orders = await _orderRepository.GetAllAsync();
+            var orders = await _orderRepository.GetAllAsync(cancellationToken);
             return _mapper.Map<IEnumerable<OrderResponseDto>>(orders);
         }
 
-        public async Task<IEnumerable<OrderResponseDto>> GetOrdersByUserIdAsync(string userId)
+        public async Task<IEnumerable<OrderResponseDto>> GetOrdersByUserIdAsync(string userId, CancellationToken cancellationToken)
         {
-            var orders = await _orderRepository.GetOrdersByUserIdAsync(userId);
+            var orders = await _orderRepository.GetOrdersByUserIdAsync(userId, cancellationToken);
             return _mapper.Map<IEnumerable<OrderResponseDto>>(orders);
         }
 
-        public async Task<GetOrderWithDetailsResponseDto> GetOrderWithDetailsAsync(int orderId)
+        public async Task<GetOrderWithDetailsResponseDto> GetOrderWithDetailsAsync(int orderId, CancellationToken cancellationToken)
         {
-            var order = await _orderRepository.GetOrderWithDetailsAsync(orderId);
+            var order = await _orderRepository.GetOrderWithDetailsAsync(orderId, cancellationToken);
             if (order == null)
             {
                 throw new KeyNotFoundException($"Order with ID {orderId} not found.");
@@ -50,33 +85,33 @@ namespace OnlineShop.Application.Services
             return _mapper.Map<GetOrderWithDetailsResponseDto>(order);
         }
 
-        public async Task CreateOrderAsync(OrderRequestDto orderDto)
+        public async Task CreateOrderAsync(OrderRequestDto orderDto, CancellationToken cancellationToken)
         {
             var order = _mapper.Map<Order>(orderDto);
-            await _orderRepository.AddAsync(order);
+            await _orderRepository.AddAsync(order, cancellationToken);
         }
 
-        public async Task UpdateOrderAsync(int orderId, OrderRequestDto orderDto)
+        public async Task UpdateOrderAsync(int orderId, OrderRequestDto orderDto, CancellationToken cancellationToken)
         {
-            var order = await _orderRepository.GetOrderWithDetailsAsync(orderId);
+            var order = await _orderRepository.GetOrderWithDetailsAsync(orderId, cancellationToken);
             if (order == null)
             {
                 throw new KeyNotFoundException($"Order with ID {orderId} not found.");
             }
 
             _mapper.Map(orderDto, order);
-            await _orderRepository.UpdateAsync(order);
+            await _orderRepository.UpdateAsync(order, cancellationToken);
         }
 
-        public async Task DeleteOrderAsync(int orderId)
+        public async Task DeleteOrderAsync(int orderId, CancellationToken cancellationToken)
         {
-            var order = await _orderRepository.GetOrderWithDetailsAsync(orderId);
+            var order = await _orderRepository.GetOrderWithDetailsAsync(orderId, cancellationToken);
             if (order == null)
             {
                 throw new KeyNotFoundException($"Order with ID {orderId} not found.");
             }
 
-            await _orderRepository.DeleteAsync(order);
+            await _orderRepository.DeleteAsync(order, cancellationToken);
         }
     }
 }
