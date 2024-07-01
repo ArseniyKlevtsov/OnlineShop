@@ -9,9 +9,22 @@ public class CategoryProfile : Profile
 {
     public CategoryProfile()
     {
-        CreateMap<Category, CategoryResponseDto>();
-        CreateMap<Category, CategoryPreviewResponseDto>();
-        CreateMap<Category, CategoryInfoResponseDto>();
-        CreateMap<CategoryRequestDto, Category>();
+        CreateMap<Category, CategoryResponseDto>()
+            .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.CategoryName))
+            .ForMember(dest => dest.Products, opt => opt.MapFrom(src => src.Products))
+            .ReverseMap();
+
+        CreateMap<Category, CategoryPreviewResponseDto>()
+            .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.CategoryName))
+            .ForMember(dest => dest.Products, opt => opt.MapFrom(src => src.Products))
+            .ReverseMap();
+
+        CreateMap<Category, CategoryInfoResponseDto>()
+            .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.CategoryName))
+            .ReverseMap();
+
+        CreateMap<CategoryRequestDto, Category>()
+            .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.CategoryName))
+            .ReverseMap();
     }
 }
