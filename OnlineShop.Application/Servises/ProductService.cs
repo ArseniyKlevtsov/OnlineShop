@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using OnlineShop.Application.DTOs.ProductDTOs.Requests;
 using OnlineShop.Application.DTOs.ProductDTOs.Responses;
+using OnlineShop.Application.Exceptions;
 using OnlineShop.Application.Exceptions.ProductExceptions;
 using OnlineShop.Application.Interfaces;
 using OnlineShop.Domain.Entities;
@@ -46,15 +47,12 @@ public class ProductService : IProductService
     public async Task CreateProductAsync(ProductRequestDto productRequestDto, CancellationToken cancellationToken)
     {
         var product = _mapper.Map<Product>(productRequestDto);
-
-        try
+        bool isProdictExist = await IsProductAlreadyExistAsync(product.ProductName!, cancellationToken);
+        if (isProdictExist)
         {
-            await _productRepository.AddAsync(product, cancellationToken);
+            throw new AlreadyExistException($"product with name {product.ProductName} already exist");
         }
-        catch (Exception ex)
-        {
-            throw new ProductOperationException("Failed to create the product.", ex);
-        }
+        await _productRepository.AddAsync(product, cancellationToken);
     }
 
     public async Task UpdateProductAsync(int productId, ProductRequestDto productRequestDto, CancellationToken cancellationToken)
@@ -62,16 +60,15 @@ public class ProductService : IProductService
         var product = await GetProductByIdWithCheckAsync(productId, cancellationToken);
 
         var updatedProduct = _mapper.Map<Product>(productRequestDto);
-        updatedProduct.ProductId = product.ProductId;
 
-        try
+        bool isProdictExist = await IsProductAlreadyExistAsync(updatedProduct.ProductName!, cancellationToken);
+        if (isProdictExist)
         {
-            await _productRepository.UpdateAsync(updatedProduct, cancellationToken);
+            throw new AlreadyExistException($"product with name {updatedProduct.ProductName} already exist");
         }
-        catch (Exception ex)
-        {
-            throw new ProductOperationException("Failed to update the product.", ex);
-        }
+
+        updatedProduct.ProductId = product.ProductId;
+        await _productRepository.UpdateAsync(updatedProduct, cancellationToken);
     }
 
     public async Task UpdateProductInfolyAsync(int productId, ProductInfoDto newProductInfoDto, CancellationToken cancellationToken)
@@ -81,33 +78,24 @@ public class ProductService : IProductService
         var updatedProduct = _mapper.Map<Product>(newProductInfoDto);
         updatedProduct.ProductId = product.ProductId;
 
-        try
-        {
-            await _productRepository.UpdateAsync(updatedProduct, cancellationToken);
-        }
-        catch (Exception ex)
-        {
-            throw new ProductOperationException("Failed to update the product information", ex);
-        }
+        await _productRepository.UpdateAsync(updatedProduct, cancellationToken);
     }
 
     public async Task DeleteProductAsync(int productId, CancellationToken cancellationToken)
     {
         var product = await GetProductByIdWithCheckAsync(productId, cancellationToken);
-
-        try
-        {
-            await _productRepository.DeleteAsync(product, cancellationToken);
-        }
-        catch (Exception ex)
-        {
-            throw new ProductOperationException("Failed to delete the product.", ex);
-        }
+        await _productRepository.DeleteAsync(product, cancellationToken);
     }
 
     private async Task<Product> GetProductByIdWithCheckAsync(int productId, CancellationToken cancellationToken)
     {
         var product = await _productRepository.GetByPredicateAsync(p => p.ProductId == productId, cancellationToken);
-        return product ?? throw new ProductNotFoundException($"Product not found.", productId);
+        return product ?? throw new NotFoundException($"Product with id:{productId} not found.");
+    }
+
+    private async Task<bool> IsProductAlreadyExistAsync(string productName, CancellationToken cancellationToken)
+    {
+        var existingProduct = await _productRepository.GetByPredicateAsync(p => p.ProductName == productName, cancellationToken);
+        return existingProduct != null;
     }
 }
