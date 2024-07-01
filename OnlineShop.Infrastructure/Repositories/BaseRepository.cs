@@ -1,11 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using OnlineShop.Domain;
 using OnlineShop.Domain.Interfaces;
-using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace OnlineShop.Infrastructure.Repositories
 {

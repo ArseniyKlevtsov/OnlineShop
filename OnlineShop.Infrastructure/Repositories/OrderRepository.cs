@@ -2,10 +2,6 @@
 using OnlineShop.Domain;
 using OnlineShop.Domain.Entities;
 using OnlineShop.Domain.Interfaces;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace OnlineShop.Infrastructure.Repositories
 {
