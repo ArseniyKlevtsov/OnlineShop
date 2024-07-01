@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using OnlineShop.Application.DTOs.UserDTOs.Requests;
@@ -16,32 +17,31 @@ public class AuthService : IAuthService
     private readonly UserManager<User> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
     private readonly IConfiguration _configuration;
+    private readonly IMapper _mapper;
 
-    public AuthService(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
+    public AuthService(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, IMapper mapper, IConfiguration configuration)
     {
         _userManager = userManager;
         _roleManager = roleManager;
         _configuration = configuration;
+        _mapper = mapper;
     }
 
-    public async Task<IdentityResult> Register(CreateUserRequestDto createUserRequestDto)
+    public async Task Register(CreateUserRequestDto createUserRequestDto)
     {
-        var user = new User
-        {
-            UserName = createUserRequestDto.Email,
-            Email = createUserRequestDto.Email,
-            FirstName = createUserRequestDto.FirstName,
-            LastName = createUserRequestDto.LastName
-        };
+        var user = _mapper.Map<User>(createUserRequestDto);
 
-        var result = await _userManager.CreateAsync(user, createUserRequestDto.Password);
+        var result = await _userManager.CreateAsync(user, createUserRequestDto.Password!);
 
         if (result.Succeeded)
         {
             await _userManager.AddToRoleAsync(user, "User");
         }
-
-        return result;
+        else
+        {
+            var errorMessage = string.Join(", ", result.Errors.Select(e => e.Description));
+            throw new RegistrationException($"Failed to register user: {errorMessage}", new Exception());
+        }
     }
 
     public async Task<string> Login(UserLoginRequestDto userLoginRequestDto)
@@ -55,7 +55,7 @@ public class AuthService : IAuthService
 
         var authClaims = new List<Claim>
         {
-            new Claim(ClaimTypes.Name, user.UserName),
+            new Claim(ClaimTypes.Name, user.Email),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
         };
 
@@ -66,7 +66,7 @@ public class AuthService : IAuthService
             authClaims.Add(new Claim(ClaimTypes.Role, userRole));
         }
 
-        var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+        var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!));
 
         var token = new JwtSecurityToken(
             issuer: _configuration["Jwt:Issuer"],

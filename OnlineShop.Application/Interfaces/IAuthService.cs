@@ -5,6 +5,6 @@ namespace OnlineShop.Application.Interfaces;
 
 public interface IAuthService
 {
-    Task<IdentityResult> Register(CreateUserRequestDto createUserRequestDto);
+    Task Register(CreateUserRequestDto createUserRequestDto);
     Task<string> Login(UserLoginRequestDto userLoginRequestDto);
 }

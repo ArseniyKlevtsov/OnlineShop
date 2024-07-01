@@ -20,13 +20,7 @@ public class AuthController : Controller
     [HttpPost("register")]
     public async Task<IActionResult> Register(CreateUserRequestDto createUserRequestDto)
     {
-        var result = await _authService.Register(createUserRequestDto);
-
-        if (!result.Succeeded)
-        {
-            return BadRequest(result.Errors);
-        }
-
+        await _authService.Register(createUserRequestDto);
         return Ok();
     }
 
@@ -35,12 +29,6 @@ public class AuthController : Controller
     public async Task<IActionResult> Login(UserLoginRequestDto userLoginRequestDto)
     {
         var token = await _authService.Login(userLoginRequestDto);
-
-        if (token == null)
-        {
-            return Unauthorized();
-        }
-
         return Ok(new { token });
     }
 }
