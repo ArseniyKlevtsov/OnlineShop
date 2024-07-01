@@ -6,8 +6,8 @@ namespace OnlineShop.Domain.Interfaces;
 
 public interface IProductRepository: IRepository<Product>
 {
-    Task<IEnumerable<Product>> GetWithIncludeAsync(ProductIncludeState includeState);
+    Task<IEnumerable<Product>> GetWithIncludeAsync(ProductIncludeState includeState, CancellationToken cancellationToken);
 
-    Task<IEnumerable<Product>> GetWithIncludeByPredicateAsync(Expression<Func<Product, bool>> predicate, ProductIncludeState includeState);
+    Task<IEnumerable<Product>> GetWithIncludeByPredicateAsync(Expression<Func<Product, bool>> predicate, ProductIncludeState includeState, CancellationToken cancellationToken);
 
 }

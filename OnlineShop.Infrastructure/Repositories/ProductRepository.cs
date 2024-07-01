@@ -12,21 +12,21 @@ public class ProductRepository : BaseRepository<Product>, IProductRepository
 {
     public ProductRepository(ApplicationDbContext context) : base(context) { }
 
-    public async Task<IEnumerable<Product>> GetWithIncludeAsync(ProductIncludeState includeState)
+    public async Task<IEnumerable<Product>> GetWithIncludeAsync(ProductIncludeState includeState, CancellationToken cancellationToken)
     {
         return await _dbSet
             .AsNoTracking()
             .IncludeWithState(includeState)
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
     }
 
-    public async Task<IEnumerable<Product>> GetWithIncludeByPredicateAsync(Expression<Func<Product, bool>> predicate, ProductIncludeState includeState)
+    public async Task<IEnumerable<Product>> GetWithIncludeByPredicateAsync(Expression<Func<Product, bool>> predicate, ProductIncludeState includeState, CancellationToken cancellationToken)
     {
         return await _dbSet
             .AsNoTracking()
             .Where(predicate)
             .IncludeWithState(includeState)
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
     }
 
 }
