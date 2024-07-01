@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using OnlineShop.Application.FluentValidation.UserValidators;
 using OnlineShop.Application.Interfaces;
+using OnlineShop.Application.Mapping;
+using OnlineShop.Application.Services;
 using OnlineShop.Application.Servises;
 using OnlineShop.Infrastructure.Configurations;
 using System.Text;
@@ -25,6 +27,12 @@ public static class ServiceRegistrator
         services.AddValidatorsFromAssembly(typeof(CreateUserRequestDtoValidator).Assembly);
 
         services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IOrderItemService, OrderItemService>();
+        services.AddScoped<IOrderService, OrderService>();
+        services.AddScoped<IProductService, ProductService>();
+        services.AddScoped<IUserService, UserService>();
+
+        services.AddAutoMapper(typeof(UserProfile).Assembly);
 
         return services;
     }
