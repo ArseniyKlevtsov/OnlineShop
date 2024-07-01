@@ -19,9 +19,9 @@ public class CategoryService : ICategoryService
         _mapper = mapper;
     }
 
-    public async Task<CategoryResponseDto> GetCategoryByIdAsync(int categoryId)
+    public async Task<CategoryResponseDto> GetCategoryByIdAsync(int categoryId, CancellationToken cancellationToken)
     {
-        var category = await _categoryRepository.GetByIdWithRelatedProductsAsync(categoryId);
+        var category = await _categoryRepository.GetByIdWithRelatedProductsAsync(categoryId, cancellationToken);
         if (category == null)
         {
             throw new NotFoundException($"Category with id {categoryId} not found.");
@@ -29,9 +29,9 @@ public class CategoryService : ICategoryService
         return _mapper.Map<CategoryResponseDto>(category);
     }
 
-    public async Task<CategoryPreviewResponseDto> GetCategoryPreviewAsync(int categoryId)
+    public async Task<CategoryPreviewResponseDto> GetCategoryPreviewAsync(int categoryId, CancellationToken cancellationToken)
     {
-        var category = await _categoryRepository.GetByIdWithRelatedProductsAsync(categoryId);
+        var category = await _categoryRepository.GetByIdWithRelatedProductsAsync(categoryId, cancellationToken);
         if (category == null)
         {
             throw new NotFoundException($"Category with id {categoryId} not found.");
@@ -39,46 +39,46 @@ public class CategoryService : ICategoryService
         return _mapper.Map<CategoryPreviewResponseDto>(category);
     }
 
-    public async Task<IEnumerable<CategoryResponseDto>> GetAllCategoriesAsync()
+    public async Task<IEnumerable<CategoryResponseDto>> GetAllCategoriesAsync(CancellationToken cancellationToken)
     {
-        var categories = await _categoryRepository.GetAllAsync();
+        var categories = await _categoryRepository.GetAllAsync(cancellationToken);
         return _mapper.Map<IEnumerable<CategoryResponseDto>>(categories);
     }
 
-    public async Task<IEnumerable<CategoryPreviewResponseDto>> GetCategoryPreviewsAsync()
+    public async Task<IEnumerable<CategoryPreviewResponseDto>> GetCategoryPreviewsAsync(CancellationToken cancellationToken)
     {
-        var categories = await _categoryRepository.GetAllAsync();
+        var categories = await _categoryRepository.GetAllAsync(cancellationToken);
         return _mapper.Map<IEnumerable<CategoryPreviewResponseDto>>(categories);
     }
 
-    public async Task<CategoryResponseDto> CreateCategoryAsync(CategoryRequestDto categoryRequestDto)
+    public async Task<CategoryResponseDto> CreateCategoryAsync(CategoryRequestDto categoryRequestDto, CancellationToken cancellationToken)
     {
         var category = _mapper.Map<Category>(categoryRequestDto);
-        await _categoryRepository.AddAsync(category);
+        await _categoryRepository.AddAsync(category, cancellationToken);
         return _mapper.Map<CategoryResponseDto>(category);
     }
 
-    public async Task<CategoryResponseDto> UpdateCategoryAsync(int id, CategoryRequestDto categoryRequestDto)
+    public async Task<CategoryResponseDto> UpdateCategoryAsync(int id, CategoryRequestDto categoryRequestDto, CancellationToken cancellationToken)
     {
-        var existingCategory = await _categoryRepository.GetByPredicateAsync(c => c.CategoryId == id);
+        var existingCategory = await _categoryRepository.GetByPredicateAsync(c => c.CategoryId == id, cancellationToken);
         if (existingCategory == null)
         {
             throw new NotFoundException($"Category with id {id} not found.");
         }
 
         _mapper.Map(categoryRequestDto, existingCategory);
-        await _categoryRepository.UpdateAsync(existingCategory);
+        await _categoryRepository.UpdateAsync(existingCategory, cancellationToken);
         return _mapper.Map<CategoryResponseDto>(existingCategory);
     }
 
-    public async Task DeleteCategoryAsync(int categoryId)
+    public async Task DeleteCategoryAsync(int categoryId, CancellationToken cancellationToken)
     {
-        var category = await _categoryRepository.GetByPredicateAsync(c => c.CategoryId == categoryId);
+        var category = await _categoryRepository.GetByPredicateAsync(c => c.CategoryId == categoryId, cancellationToken);
         if (category == null)
         {
             throw new NotFoundException($"Category with id {categoryId} not found.");
         }
 
-        await _categoryRepository.DeleteByIdAsync(categoryId);
+        await _categoryRepository.DeleteByIdAsync(categoryId, cancellationToken);
     }
 }
