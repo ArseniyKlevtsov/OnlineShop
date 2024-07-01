@@ -1,4 +1,5 @@
-﻿using OnlineShop.Application.Exceptions;
+using OnlineShop.Application.Exceptions;
+using OnlineShop.Application.Exceptions.ProductExceptions;
 using OnlineShop.Application.Exceptions.AuthExceptions;
 using System.Net;
 
@@ -20,13 +21,21 @@ public class ExceptionHandlingMiddleware(RequestDelegate next)
         }
     }
 
-    private async Task HandleExceptionAsync(HttpContext context, Exception exception)
+    private static async Task HandleExceptionAsync(HttpContext context, Exception exception)
     {
         ExceptionResponse response = exception switch
         {
+
+            // Product Service
+            ProductNotFoundException ex => new ExceptionResponse(HttpStatusCode.NotFound, ex.Message),
+            ProductOperationException ex => new ExceptionResponse(HttpStatusCode.BadRequest, ex.Message),
+            
+            // Auth Service
             UserNotFoundException ex => new ExceptionResponse(HttpStatusCode.NotFound, exception.Message),
+            
+            // unexpected exception
             _ => new ExceptionResponse(HttpStatusCode.InternalServerError, "Internal server error. Please retry later.")
-        };
+        }; 
 
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = (int)response.StatusCode;
