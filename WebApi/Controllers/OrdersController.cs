@@ -2,7 +2,6 @@
 using OnlineShop.Application.DTOs.OrderDTOs.Requests;
 using OnlineShop.Application.DTOs.OrderDTOs.Responses;
 using OnlineShop.Application.Interfaces;
-using AutoMapper;
 
 namespace OnlineShop.WebApi.Controllers
 {
@@ -11,12 +10,10 @@ namespace OnlineShop.WebApi.Controllers
     public class OrdersController : ControllerBase
     {
         private readonly IOrderService _orderService;
-        private readonly IMapper _mapper;
 
-        public OrdersController(IOrderService orderService, IMapper mapper)
+        public OrdersController(IOrderService orderService)
         {
             _orderService = orderService;
-            _mapper = mapper;
         }
 
         [HttpGet("{id}")]
@@ -50,14 +47,8 @@ namespace OnlineShop.WebApi.Controllers
         [HttpPost]
         public async Task<ActionResult<OrderResponseDto>> CreateOrderAsync([FromBody] OrderRequestDto orderRequestDto, CancellationToken cancellationToken)
         {
-            await _orderService.CreateOrderAsync(orderRequestDto, cancellationToken);
-
-            var createdOrderResponse = _mapper.Map<OrderResponseDto>(orderRequestDto);
-
-            var createdOrder = await _orderService.GetOrderWithDetailsAsync(createdOrderResponse.OrderId, cancellationToken);
-            createdOrderResponse.OrderId = createdOrder.OrderId;
-
-            return CreatedAtAction(nameof(GetOrderByIdAsync), new { id = createdOrderResponse.OrderId }, createdOrderResponse);
+            var createdOrder = await _orderService.CreateOrderAsync(orderRequestDto, cancellationToken);
+            return CreatedAtAction(nameof(GetOrderByIdAsync), new { id = createdOrder.OrderId }, createdOrder);
         }
 
         [HttpPut("{id}")]

@@ -38,9 +38,9 @@ namespace OnlineShop.Application.Services
             return await GetOrderWithDetailsAsync(orderId, CancellationToken.None);
         }
 
-        public async Task CreateOrderAsync(OrderRequestDto order)
+        public async Task<OrderResponseDto> CreateOrderAsync(OrderRequestDto orderDto)
         {
-            await CreateOrderAsync(order, CancellationToken.None);
+            return await CreateOrderAsync(orderDto, CancellationToken.None);
         }
 
         public async Task UpdateOrderAsync(int orderId, OrderRequestDto order)
@@ -85,10 +85,11 @@ namespace OnlineShop.Application.Services
             return _mapper.Map<GetOrderWithDetailsResponseDto>(order);
         }
 
-        public async Task CreateOrderAsync(OrderRequestDto orderDto, CancellationToken cancellationToken)
+        public async Task<OrderResponseDto> CreateOrderAsync(OrderRequestDto orderDto, CancellationToken cancellationToken)
         {
             var order = _mapper.Map<Order>(orderDto);
             await _orderRepository.AddAsync(order, cancellationToken);
+            return _mapper.Map<OrderResponseDto>(order);
         }
 
         public async Task UpdateOrderAsync(int orderId, OrderRequestDto orderDto, CancellationToken cancellationToken)

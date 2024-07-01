@@ -10,7 +10,7 @@ namespace OnlineShop.Application.Interfaces
         Task<IEnumerable<OrderResponseDto>> GetOrdersByUserIdAsync(string userId);
         Task<GetOrderWithDetailsResponseDto> GetOrderWithDetailsAsync(int orderId);
 
-        Task CreateOrderAsync(OrderRequestDto order);
+        Task<OrderResponseDto> CreateOrderAsync(OrderRequestDto order);
         Task UpdateOrderAsync(int orderId, OrderRequestDto order);
         Task DeleteOrderAsync(int orderId);
 
@@ -19,7 +19,7 @@ namespace OnlineShop.Application.Interfaces
         Task<IEnumerable<OrderResponseDto>> GetOrdersByUserIdAsync(string userId, CancellationToken cancellationToken);
         Task<GetOrderWithDetailsResponseDto> GetOrderWithDetailsAsync(int orderId, CancellationToken cancellationToken);
 
-        Task CreateOrderAsync(OrderRequestDto order, CancellationToken cancellationToken);
+        Task<OrderResponseDto> CreateOrderAsync(OrderRequestDto order, CancellationToken cancellationToken);
         Task UpdateOrderAsync(int orderId, OrderRequestDto order, CancellationToken cancellationToken);
         Task DeleteOrderAsync(int orderId, CancellationToken cancellationToken);
     }
