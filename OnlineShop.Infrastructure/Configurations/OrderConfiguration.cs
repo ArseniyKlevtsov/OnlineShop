@@ -14,8 +14,7 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
                .IsRequired();
 
         builder.Property(o => o.UserId)
-               .IsRequired()
-               .HasMaxLength(70);
+               .IsRequired();
 
         builder.HasMany(o => o.OrderItems)
                .WithOne(oi => oi.Order)
