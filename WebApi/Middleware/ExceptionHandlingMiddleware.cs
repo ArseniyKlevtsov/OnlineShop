@@ -25,14 +25,19 @@ public class ExceptionHandlingMiddleware(RequestDelegate next)
     {
         ExceptionResponse response = exception switch
         {
+            // Auth
+            RegistrationException ex => new ExceptionResponse(HttpStatusCode.BadRequest, ex.Message),
+            UserNotFoundException ex => new ExceptionResponse(HttpStatusCode.NotFound, ex.Message),
 
-            // Product Service
-            ProductNotFoundException ex => new ExceptionResponse(HttpStatusCode.NotFound, ex.Message),
+            // Product
             ProductOperationException ex => new ExceptionResponse(HttpStatusCode.BadRequest, ex.Message),
-            
-            // Auth Service
-            UserNotFoundException ex => new ExceptionResponse(HttpStatusCode.NotFound, exception.Message),
-            
+
+            // Base
+            AlreadyExistException ex => new ExceptionResponse(HttpStatusCode.Conflict, ex.Message),
+            InvalidInputException ex => new ExceptionResponse(HttpStatusCode.BadRequest, ex.Message),
+            NotFoundException ex => new ExceptionResponse(HttpStatusCode.NotFound, ex.Message),
+            Application.Exceptions.UnauthorizedAccessException ex => new ExceptionResponse(HttpStatusCode.Unauthorized, ex.Message),
+
             // unexpected exception
             _ => new ExceptionResponse(HttpStatusCode.InternalServerError, "Internal server error. Please retry later.")
         }; 
