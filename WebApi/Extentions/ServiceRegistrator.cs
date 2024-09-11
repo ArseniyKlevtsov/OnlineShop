@@ -31,6 +31,7 @@ public static class ServiceRegistrator
         services.AddScoped<IOrderService, OrderService>();
         services.AddScoped<IProductService, ProductService>();
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<ICategoryService, CategoryService>();
 
         services.AddAutoMapper(typeof(UserProfile).Assembly);
 
@@ -56,12 +57,11 @@ public static class ServiceRegistrator
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]))
             };
         });
-
         services.AddAuthorization(options =>
         {
-            options.AddPolicy("RequireAdministratorRole", policy => policy.RequireRole("Admin"));
-            options.AddPolicy("RequireUserRole", policy => policy.RequireRole("User"));
-            options.AddPolicy("RequireAdminOrUser", policy => policy.RequireRole("Admin", "User"));
+            options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
+            options.AddPolicy("User", policy => policy.RequireRole("User"));
+            options.AddPolicy("AdminOrUser", policy => policy.RequireRole("Admin", "User"));
         });
         return services;
     }

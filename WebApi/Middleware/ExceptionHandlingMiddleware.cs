@@ -39,7 +39,7 @@ public class ExceptionHandlingMiddleware(RequestDelegate next)
             Application.Exceptions.UnauthorizedAccessException ex => new ExceptionResponse(HttpStatusCode.Unauthorized, ex.Message),
 
             // unexpected exception
-            _ => new ExceptionResponse(HttpStatusCode.InternalServerError, "Internal server error. Please retry later.")
+            _ => new ExceptionResponse(HttpStatusCode.InternalServerError, "Internal server error. Please retry later." + exception.Message)
         }; 
 
         context.Response.ContentType = "application/json";

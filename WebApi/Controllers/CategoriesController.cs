@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using OnlineShop.Application.DTOs.CategoryDTOs.Requests;
 using OnlineShop.Application.DTOs.CategoryDTOs.Responses;
 using OnlineShop.Application.Interfaces;
-using System.Threading;
 
 namespace OnlineShop.WebApi.Controllers;
 
@@ -18,6 +18,7 @@ public class CategoriesController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize(Roles = "Admin,User")]
     public async Task<ActionResult<IEnumerable<CategoryResponseDto>>> GetAllCategories(CancellationToken cancellationToken)
     {
         var categories = await _categoryService.GetAllCategoriesAsync(cancellationToken);
@@ -48,8 +49,8 @@ public class CategoriesController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<CategoryResponseDto>> CreateCategory(CategoryRequestDto categoryRequestDto, CancellationToken cancellationToken)
     {
-        var createdCategory = await _categoryService.CreateCategoryAsync(categoryRequestDto, cancellationToken);
-        return CreatedAtAction(nameof(GetCategory), new { id = createdCategory.CategoryId }, createdCategory);
+        await _categoryService.CreateCategoryAsync(categoryRequestDto, cancellationToken);
+        return NoContent();
     }
 
     [HttpPut("{id}")]

@@ -53,7 +53,7 @@ namespace OnlineShop.API.Controllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "RequireAdministratorRole")]
+        //[Authorize(Policy = "RequireAdministratorRole")]
         public async Task<IActionResult> CreateProduct(ProductRequestDto productRequestDto, CancellationToken cancellationToken)
         {
             await _productService.CreateProductAsync(productRequestDto, cancellationToken);
