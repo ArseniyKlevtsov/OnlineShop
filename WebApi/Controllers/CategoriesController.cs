@@ -26,6 +26,7 @@ public class CategoriesController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [Authorize(Roles = "Admin,User")]
     public async Task<ActionResult<CategoryResponseDto>> GetCategory(int id, CancellationToken cancellationToken)
     {
         var category = await _categoryService.GetCategoryByIdAsync(id, cancellationToken);
@@ -33,6 +34,7 @@ public class CategoriesController : ControllerBase
     }
 
     [HttpGet("preview/{id}")]
+    [Authorize(Roles = "Admin,User")]
     public async Task<ActionResult<CategoryPreviewResponseDto>> GetCategoryPreview(int id, CancellationToken cancellationToken)
     {
         var categoryPreview = await _categoryService.GetCategoryPreviewAsync(id, cancellationToken);
@@ -40,6 +42,7 @@ public class CategoriesController : ControllerBase
     }
 
     [HttpGet("previews")]
+    [Authorize(Roles = "Admin,User")]
     public async Task<ActionResult<IEnumerable<CategoryPreviewResponseDto>>> GetCategoryPreviews(CancellationToken cancellationToken)
     {
         var categoryPreviews = await _categoryService.GetCategoryPreviewsAsync(cancellationToken);
@@ -47,6 +50,7 @@ public class CategoriesController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<CategoryResponseDto>> CreateCategory(CategoryRequestDto categoryRequestDto, CancellationToken cancellationToken)
     {
         await _categoryService.CreateCategoryAsync(categoryRequestDto, cancellationToken);
@@ -54,6 +58,7 @@ public class CategoriesController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<CategoryResponseDto>> UpdateCategory(int id, CategoryRequestDto categoryRequestDto, CancellationToken cancellationToken)
     {
         var updatedCategory = await _categoryService.UpdateCategoryAsync(id, categoryRequestDto, cancellationToken);
@@ -61,6 +66,7 @@ public class CategoriesController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult> DeleteCategory(int id, CancellationToken cancellationToken)
     {
         await _categoryService.DeleteCategoryAsync(id, cancellationToken);

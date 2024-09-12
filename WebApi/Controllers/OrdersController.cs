@@ -1,68 +1,75 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using OnlineShop.Application.DTOs.OrderDTOs.Requests;
 using OnlineShop.Application.DTOs.OrderDTOs.Responses;
 using OnlineShop.Application.Interfaces;
 
-namespace OnlineShop.WebApi.Controllers
+namespace OnlineShop.WebApi.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class OrdersController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class OrdersController : ControllerBase
+    private readonly IOrderService _orderService;
+
+    public OrdersController(IOrderService orderService)
     {
-        private readonly IOrderService _orderService;
+        _orderService = orderService;
+    }
 
-        public OrdersController(IOrderService orderService)
-        {
-            _orderService = orderService;
-        }
+    [HttpGet("{id}")]
+    [Authorize(Roles = "Admin,User")]
+    public async Task<ActionResult<OrderResponseDto>> GetOrderByIdAsync([FromRoute] int id, CancellationToken cancellationToken)
+    {
+        var order = await _orderService.GetOrderByIdAsync(id, cancellationToken);
+        return Ok(order);
+    }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<OrderResponseDto>> GetOrderByIdAsync([FromRoute] int id, CancellationToken cancellationToken)
-        {
-            var order = await _orderService.GetOrderByIdAsync(id, cancellationToken);
-            return Ok(order);
-        }
+    [HttpGet]
+    [Authorize(Roles = "Admin,User")]
+    public async Task<ActionResult<IEnumerable<OrderResponseDto>>> GetAllOrdersAsync(CancellationToken cancellationToken)
+    {
+        var orders = await _orderService.GetAllOrdersAsync(cancellationToken);
+        return Ok(orders);
+    }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<OrderResponseDto>>> GetAllOrdersAsync(CancellationToken cancellationToken)
-        {
-            var orders = await _orderService.GetAllOrdersAsync(cancellationToken);
-            return Ok(orders);
-        }
+    [HttpGet("user/{userId}")]
+    [Authorize(Roles = "Admin,User")]
+    public async Task<ActionResult<IEnumerable<OrderResponseDto>>> GetOrdersByUserIdAsync([FromRoute] string userId, CancellationToken cancellationToken)
+    {
+        var orders = await _orderService.GetOrdersByUserIdAsync(userId, cancellationToken);
+        return Ok(orders);
+    }
 
-        [HttpGet("user/{userId}")]
-        public async Task<ActionResult<IEnumerable<OrderResponseDto>>> GetOrdersByUserIdAsync([FromRoute] string userId, CancellationToken cancellationToken)
-        {
-            var orders = await _orderService.GetOrdersByUserIdAsync(userId, cancellationToken);
-            return Ok(orders);
-        }
+    [HttpGet("{id}/details")]
+    [Authorize(Roles = "Admin,User")]
+    public async Task<ActionResult<GetOrderWithDetailsResponseDto>> GetOrderWithDetailsAsync([FromRoute] int id, CancellationToken cancellationToken)
+    {
+        var order = await _orderService.GetOrderWithDetailsAsync(id, cancellationToken);
+        return Ok(order);
+    }
 
-        [HttpGet("{id}/details")]
-        public async Task<ActionResult<GetOrderWithDetailsResponseDto>> GetOrderWithDetailsAsync([FromRoute] int id, CancellationToken cancellationToken)
-        {
-            var order = await _orderService.GetOrderWithDetailsAsync(id, cancellationToken);
-            return Ok(order);
-        }
+    [HttpPost]
+    [Authorize(Roles = "Admin,User")]
+    public async Task<ActionResult<OrderResponseDto>> CreateOrderAsync([FromBody] OrderRequestDto orderRequestDto, CancellationToken cancellationToken)
+    {
+        var createdOrder = await _orderService.CreateOrderAsync(orderRequestDto, cancellationToken);
+        return CreatedAtAction(nameof(GetOrderByIdAsync), new { id = createdOrder.OrderId }, createdOrder);
+    }
 
-        [HttpPost]
-        public async Task<ActionResult<OrderResponseDto>> CreateOrderAsync([FromBody] OrderRequestDto orderRequestDto, CancellationToken cancellationToken)
-        {
-            var createdOrder = await _orderService.CreateOrderAsync(orderRequestDto, cancellationToken);
-            return CreatedAtAction(nameof(GetOrderByIdAsync), new { id = createdOrder.OrderId }, createdOrder);
-        }
+    [HttpPut("{id}")]
+    [Authorize(Roles = "Admin,User")]
+    public async Task<IActionResult> UpdateOrderAsync([FromRoute] int id, [FromBody] OrderRequestDto orderRequestDto, CancellationToken cancellationToken)
+    {
+        await _orderService.UpdateOrderAsync(id, orderRequestDto, cancellationToken);
+        return NoContent();
+    }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateOrderAsync([FromRoute] int id, [FromBody] OrderRequestDto orderRequestDto, CancellationToken cancellationToken)
-        {
-            await _orderService.UpdateOrderAsync(id, orderRequestDto, cancellationToken);
-            return NoContent();
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteOrderAsync([FromRoute] int id, CancellationToken cancellationToken)
-        {
-            await _orderService.DeleteOrderAsync(id, cancellationToken);
-            return NoContent();
-        }
+    [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin,User")]
+    public async Task<IActionResult> DeleteOrderAsync([FromRoute] int id, CancellationToken cancellationToken)
+    {
+        await _orderService.DeleteOrderAsync(id, cancellationToken);
+        return NoContent();
     }
 }

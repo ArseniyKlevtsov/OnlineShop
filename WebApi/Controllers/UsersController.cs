@@ -19,7 +19,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpGet("{userId}")]
-    [Authorize(Policy = "RequireAdminOrUser")]
+    [Authorize(Roles = "Admin,User")]
     public async Task<ActionResult<UserWithRolesResponse>> GetUser([FromRoute] string userId, CancellationToken cancellationToken)
     {
         var user = await _userService.GetUserWithRolesAsync(userId, cancellationToken);
@@ -27,7 +27,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpGet]
-    [Authorize(Policy = "RequireAdministratorRole")]
+    [Authorize(Roles = "Admin,User")]
     public async Task<ActionResult<IEnumerable<UserWithRolesResponse>>> GetAllUsers(CancellationToken cancellationToken)
     {
         var users = await _userService.GetAllUsersWithRolesAsync(cancellationToken);
@@ -35,7 +35,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost]
-    [Authorize(Policy = "RequireAdministratorRole")]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<UserWithRolesResponse>> CreateUser([FromBody] CreateUserRequestDto createUserDto, CancellationToken cancellationToken)
     {
         var createdUser = await _userService.CreateUserAsync(createUserDto, cancellationToken);
@@ -43,7 +43,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpPut]
-    [Authorize(Policy = "RequireAdminOrUser")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> UpdateUser([FromBody] UpdateUserInfoRequestDto updateUserDto, CancellationToken cancellationToken)
     {
         await _userService.UpdateUserAsync(updateUserDto, cancellationToken);
@@ -51,7 +51,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpDelete("{userId}")]
-    [Authorize(Policy = "RequireAdministratorRole")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteUser(string userId, CancellationToken cancellationToken)
     {
         await _userService.DeleteUserAsync(userId, cancellationToken);
